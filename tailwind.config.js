@@ -4,14 +4,14 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'media', 
   theme: {
     extend: {
       colors: {
-        // Define your custom colors here
-        'primary-accent': '#FF6B6B', // A vibrant red
-        'primary-text': '#1E3F66', // A dark gray for text
-        'bg-light': '#ADD8E6', // A light blue for backgrounds
-        'bg-dark': '#607881', // A dark blue  for dark mode backgrounds
+        primaryAccent: '#FF6B6B',
+        primaryText: '#1E3F66',
+        bgLight: '#ADD8E6',
+        bgDark: '#607881',
       },
     },
   },

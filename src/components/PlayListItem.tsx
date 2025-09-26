@@ -20,10 +20,10 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ song, isSelected, onSelect 
   return (
     <div className={itemClasses} onClick={() => onSelect(song)}>
       <div className="flex-1">
-        <h4 className="text-primary-text dark:text-bg-light font-bold text-lg">{song.title}</h4>
+        <h4 className="text-primaryText dark:text-bgLight font-bold text-lg">{song.title}</h4>
         <p className="text-gray-500 dark:text-gray-400 text-sm">{song.artist}</p>
       </div>
-      <span className="text-primary-text dark:text-bg-light text-sm">{formatDuration(song.duration)}</span>
+      <span className="text-primaryText dark:text-bgLight text-sm">{formatDuration(song.duration)}</span>
     </div>
   );
 };
