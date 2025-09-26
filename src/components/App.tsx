@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MusicPlayer from './MusicPlayer';
 import LoadingSkeleton from './LoadingSkeleton';
-import '/src/index.css';
+import '../index.css';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +15,7 @@ function App() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-light dark:bg-bg-dark text-primary-text dark:text-bg-light">
+    <div className="flex flex-col min-h-screen bg-bg-light dark:bg-bg-dark text-primary-text dark:text-bg-light">
       {isLoading ? <LoadingSkeleton /> : <MusicPlayer />}
     </div>
   );

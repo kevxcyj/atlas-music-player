@@ -1,6 +1,6 @@
 const LoadingSkeleton = () => {
   return (
-    <div className="bg-white dark:bg-gray-900 p-8 min-h-screen">
+    <div className="p-8 min-h-screen">
       <div className="container mx-auto max-w-6xl flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0 animate-pulse">
         {/* Currently Playing Skeleton */}
         <div className="flex-1 flex flex-col items-center space-y-6">
