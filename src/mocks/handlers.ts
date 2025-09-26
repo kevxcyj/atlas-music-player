@@ -8,15 +8,15 @@ export const handlers = [
         title: 'Painted in Blue',
         artist: 'Soul Canvas',
         artwork: 'https://placehold.co/100x100',
-        duration: '5:55',
+        duration: 355,
         url: 'http://localhost:5173/api/v1/audio?songId=1',
       },
       {
         id: 2,
-        title: 'Title Drift',
+        title: 'Tidal Drift',
         artist: 'Cosmic Seas',
         artwork: 'https://placehold.co/100x100',
-        duration: '8:02',
+        duration: 482,
         url: 'http://localhost:5173/api/v1/audio?songId=2',
       },
     ]);

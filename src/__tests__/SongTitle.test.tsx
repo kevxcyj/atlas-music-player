@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react';
 import { expect, test } from 'vitest';
 import SongTitle from '../components/SongTitle';
+import { Song } from '../components/MusicPlayer';
 
-// Mock song data
-const mockSong = {
+const mockSong: Song = {
   id: 1,
   title: 'Test Song',
   artist: 'Test Artist',
   artwork: '',
-  duration: '3:00',
+  duration: 180,
   url: '',
 };
 
