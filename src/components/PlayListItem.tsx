@@ -1,5 +1,11 @@
 import { Song } from './MusicPlayer';
 
+const formatDuration = (durationInSeconds: number): string => {
+  const minutes = Math.floor(durationInSeconds / 60);
+  const seconds = Math.floor(durationInSeconds % 60);
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+};
+
 interface PlaylistItemProps {
   song: Song;
   isSelected: boolean;
@@ -17,7 +23,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ song, isSelected, onSelect 
         <h4 className="text-primary-text dark:text-bg-light font-bold text-lg">{song.title}</h4>
         <p className="text-gray-500 dark:text-gray-400 text-sm">{song.artist}</p>
       </div>
-      <span className="text-primary-text dark:text-bg-light text-sm">{song.duration}</span>
+      <span className="text-primary-text dark:text-bg-light text-sm">{formatDuration(song.duration)}</span>
     </div>
   );
 };

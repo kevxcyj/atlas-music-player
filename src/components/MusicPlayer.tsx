@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import LoadingSkeleton from './LoadingSkeleton';
 import CurrentlyPlaying from './CurrentlyPlaying';
 import Playlist from './Playlist';
-import PlayControls from './PlayControls';
-import VolumeControls from './VolumeControls';
 import AudioPlayer from './AudioPlayer';
 
 export interface Song {
@@ -11,7 +9,7 @@ export interface Song {
   title: string;
   artist: string;
   artwork: string;
-  duration: string;
+  duration: number; // Changed to number
   url: string;
 }
 
@@ -81,7 +79,8 @@ const MusicPlayer = () => {
     <div className="flex flex-col md:flex-row p-6 md:p-8 space-y-8 md:space-y-0 md:space-x-8 bg-bg-light dark:bg-bg-dark text-primary-text dark:text-bg-light">
       <div className="flex-1">
         <CurrentlyPlaying 
-          song={currentSong} 
+          song={currentSong}
+          playlist={playlist}
           isPlaying={isPlaying} 
           setIsPlaying={setIsPlaying}
           playbackSpeed={playbackSpeed}
