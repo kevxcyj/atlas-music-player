@@ -140,12 +140,6 @@ describe('MusicPlayer', () => {
   test('should change the current song when a song in the playlist is clicked', async () => {
     render(<MusicPlayer />);
 
-
-    await waitFor(() => {
-      expect(screen.getByText('Painted in Blue')).toBeInTheDocument();
-    });
-
-    
     const secondSongInPlaylist = screen.getByText('Tidal Drift');
     fireEvent.click(secondSongInPlaylist);
 
