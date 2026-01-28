@@ -53,7 +53,7 @@ const PlayControls: React.FC<PlayControlsProps> = ({
       >
         <Rewind size={24} />
       </button>
-      <button aria-label={isPlaying ? "Pause" : "Play"} onClick={togglePlay} className="p-4 rounded-lg bg-primaryAccent text-bgLight hover:bg-primaryAccent/80 transition-colors duration-200">
+      <button aria-label={isPlaying ? "Pause" : "Play"} onClick={togglePlay} className="bg-accent text-white p-4 rounded-full hover:bg-accent-hover hover:scale-105 transition-all">
         {isPlaying ? <Pause size={32} /> : <Play size={32} />}
       </button>
       <button 

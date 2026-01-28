@@ -15,7 +15,7 @@ function App() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-bg-light dark:bg-bg-dark text-primary-text dark:text-bg-light">
+    <div className="flex flex-col min-h-screen bg-bg-light dark:bg-bg-dark text-primary-text dark:text-bg-light transition-colors duration-300">
       {isLoading ? <LoadingSkeleton /> : <MusicPlayer />}
     </div>
   );
