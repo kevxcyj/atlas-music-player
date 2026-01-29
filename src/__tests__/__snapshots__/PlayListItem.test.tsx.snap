@@ -1,0 +1,57 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PlaylistItem renders correctly when not selected 1`] = `
+<div>
+  <div
+    class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
+  >
+    <div
+      class="flex-1"
+    >
+      <h4
+        class="text-primary-text dark:text-bg-light font-bold text-lg"
+      >
+        Painted in Blue
+      </h4>
+      <p
+        class="text-gray-500 dark:text-gray-400 text-sm"
+      >
+        Soul Canvas
+      </p>
+    </div>
+    <span
+      class="text-primary-text dark:text-bg-light text-sm"
+    >
+      5:55
+    </span>
+  </div>
+</div>
+`;
+
+exports[`PlaylistItem renders correctly when selected 1`] = `
+<div>
+  <div
+    class="flex items-center justify-between p-4 rounded-lg bg-gray-200 dark:bg-gray-700"
+  >
+    <div
+      class="flex-1"
+    >
+      <h4
+        class="text-primary-text dark:text-bg-light font-bold text-lg"
+      >
+        Painted in Blue
+      </h4>
+      <p
+        class="text-gray-500 dark:text-gray-400 text-sm"
+      >
+        Soul Canvas
+      </p>
+    </div>
+    <span
+      class="text-primary-text dark:text-bg-light text-sm"
+    >
+      5:55
+    </span>
+  </div>
+</div>
+`;
