@@ -1,74 +1,61 @@
-import React from 'react';
-import { Play, SkipForward, Rewind, Shuffle, Pause } from 'lucide-react';
-import { Song } from './MusicPlayer';
+import { Play, Pause, SkipBack, SkipForward, Shuffle } from 'lucide-react';
+import { PlayControlsProps } from '../types';
 
-interface PlayControlsProps {
-  isPlaying: boolean;
-  setIsPlaying: (isPlaying: boolean) => void;
-  playbackSpeed: number;
-  setPlaybackSpeed: (speed: number) => void;
-  isShuffling: boolean;
-  setIsShuffling: (isShuffling: boolean) => void;
-  playNextSong: () => void;
-  playPreviousSong: () => void;
-  song: Song | null;
-  playlist: Song[];
-}
-
-const PlayControls: React.FC<PlayControlsProps> = ({ 
-  isPlaying, 
-  setIsPlaying, 
-  playbackSpeed, 
-  setPlaybackSpeed, 
-  isShuffling, 
-  setIsShuffling, 
-  playNextSong, 
-  playPreviousSong,
-  song,
-  playlist
-}) => {
-  const togglePlay = () => setIsPlaying(!isPlaying);
-  
-  const toggleSpeed = () => {
-    const speeds = [1, 2, 0.5];
-    const currentSpeedIndex = speeds.indexOf(playbackSpeed);
-    const nextSpeed = speeds[(currentSpeedIndex + 1) % speeds.length];
-    setPlaybackSpeed(nextSpeed);
-  };
-
-  const currentIndex = playlist.findIndex(item => item.id === song?.id);
-  const isFirstSong = currentIndex === 0;
-  const isLastSong = currentIndex === playlist.length - 1;
-
+export default function PlayControls({
+  isPlaying,
+  speed,
+  isShuffle,
+  onTogglePlay,
+  onToggleShuffle,
+  onChangeSpeed,
+  onNext,
+  onPrev,
+  hasPrevious,
+  hasNext
+}: PlayControlsProps) {
   return (
-    <div className="flex items-center space-x-4">
-      <button aria-label="Playback Speed" onClick={toggleSpeed}>
-        <span className="text-primaryText dark:text-bgLight">{playbackSpeed}x</span>
-      </button>
-      <button 
-        aria-label="Play Previous Song" 
-        onClick={playPreviousSong} 
-        className="p-2 rounded-full text-primaryText dark:text-bgLight hover:bg-bgLight dark:hover:bg-bgDark transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        disabled={isFirstSong}
-      >
-        <Rewind size={24} />
-      </button>
-      <button aria-label={isPlaying ? "Pause" : "Play"} onClick={togglePlay} className="bg-accent text-white p-4 rounded-full hover:bg-accent-hover hover:scale-105 transition-all">
-        {isPlaying ? <Pause size={32} /> : <Play size={32} />}
-      </button>
-      <button 
-        aria-label="Play Next Song" 
-        onClick={playNextSong} 
-        className="p-2 rounded-full text-primaryText dark:text-bgLight hover:bg-bgLight dark:hover:bg-bgDark transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        disabled={isLastSong && !isShuffling}
-      >
-        <SkipForward size={24} />
-      </button>
-      <button aria-label="Toggle Shuffle" onClick={() => setIsShuffling(!isShuffling)} className={`p-2 rounded-full hover:bg-bgLight dark:hover:bg-bgDark transition-colors duration-200 ${isShuffling ? 'text-primaryAccent' : 'text-primaryText dark:text-bgLight'}`}>
-        <Shuffle size={24} />
-      </button>
+    <div className="flex items-center justify-between w-full max-w-md mx-auto">
+        {/* Speed Button */}
+        <button 
+            onClick={onChangeSpeed}
+            className="text-xs font-bold w-10 text-atlas-secondary hover:text-atlas-accent transition-colors"
+        >
+            {speed}x
+        </button>
+
+        {/* Back */}
+        <button 
+            onClick={onPrev} 
+            disabled={!hasPrevious}
+            className="text-atlas-text-light dark:text-atlas-text-dark disabled:opacity-30 hover:text-atlas-accent transition-colors"
+        >
+            <SkipBack size={24} />
+        </button>
+
+        {/* Play/Pause */}
+        <button 
+            onClick={onTogglePlay}
+            className="p-4 rounded-full bg-atlas-accent hover:bg-atlas-accent-hover text-white transition-transform hover:scale-105 shadow-lg"
+        >
+            {isPlaying ? <Pause size={32} fill="currentColor" /> : <Play size={32} fill="currentColor" />}
+        </button>
+
+        {/* Next */}
+        <button 
+            onClick={onNext}
+            disabled={!hasNext}
+            className="text-atlas-text-light dark:text-atlas-text-dark disabled:opacity-30 hover:text-atlas-accent transition-colors"
+        >
+            <SkipForward size={24} />
+        </button>
+
+        {/* Shuffle */}
+        <button 
+            onClick={onToggleShuffle}
+            className={`transition-colors ${isShuffle ? 'text-atlas-accent' : 'text-atlas-secondary hover:text-gray-500'}`}
+        >
+            <Shuffle size={20} />
+        </button>
     </div>
   );
-};
-
-export default PlayControls;
+}

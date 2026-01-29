@@ -1,15 +1,30 @@
 @import "tailwindcss";
 
 @theme {
+  --color-atlas-bg-light: #4468BB;
+  --color-atlas-bg-dark: #0f172a;
+  
+  --color-atlas-card-light: #6583C8;
+  --color-atlas-card-dark: #1e293b;
 
- --color-bg-light: #f3f4f6; 
-  --color-bg-dark: #111827;
-  --color-primary-text: #1f2937;
+  --color-atlas-text-light: #1f2937;
+  --color-atlas-text-dark: #f8fafc;
 
-  --color-accent: #8b5cf6;       
-  --color-accent-hover: #7c3aed;
+  --color-atlas-accent: #144FDE;       /* Lighter shade */
+  --color-atlas-accent-hover: #0E3795; /* Navy Blue */
+  --color-atlas-secondary: #64748b;    /* Grey */
 }
 
-:root {
-  color-scheme: light dark;
+
+@layer base {
+  body {
+    @apply bg-atlas-bg-light text-atlas-text-light transition-colors duration-300;
+  }
+
+  /* System dark mode */
+  @media (prefers-color-scheme: dark) {
+    body {
+      @apply bg-atlas-bg-dark text-atlas-text-dark;
+    }
+  }
 }

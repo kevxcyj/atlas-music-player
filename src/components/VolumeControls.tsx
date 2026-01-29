@@ -1,27 +1,18 @@
 import { Volume2 } from 'lucide-react';
+import { VolumeControlsProps } from '../types';
 
-interface VolumeControlsProps {
-  volume: number;
-  onVolumeChange: (newVolume: number) => void;
-}
-
-const VolumeControls: React.FC<VolumeControlsProps> = ({ volume, onVolumeChange }) => {
+export default function VolumeControls({ volume, onVolumeChange }: VolumeControlsProps) {
   return (
-    <div className="flex items-center space-x-2 w-full">
-      <button aria-label="Volume Icon">
-        <Volume2 size={24} className="text-black dark:text-white" />
-      </button>
+    <div className="flex items-center gap-3 w-full max-w-xs mx-auto text-atlas-secondary">
+      <Volume2 size={20} />
       <input
         type="range"
-        aria-label="Volume Slider"
-        className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
         min="0"
         max="100"
         value={volume}
         onChange={(e) => onVolumeChange(Number(e.target.value))}
+        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-atlas-accent"
       />
     </div>
   );
-};
-
-export default VolumeControls;
+}

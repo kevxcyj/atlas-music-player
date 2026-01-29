@@ -1,134 +1,125 @@
-import React, { useState, useEffect } from 'react';
-import LoadingSkeleton from './LoadingSkeleton';
+import { useState, useEffect } from 'react';
+import { Song } from '../types';
 import CurrentlyPlaying from './CurrentlyPlaying';
 import Playlist from './Playlist';
+import LoadingSkeleton from './LoadingSkeleton';
 import AudioPlayer from './AudioPlayer';
 
-export interface Song {
-  id: any;
-  title: string;
-  artist: string;
-  artwork: string;
-  duration: number;
-  url: string;
-}
-
-const MusicPlayer = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export default function MusicPlayer() {
   const [playlist, setPlaylist] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [volume, setVolume] = useState<number>(50);
-  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
-  const [isShuffling, setIsShuffling] = useState<boolean>(false);
-
-  const fetchSongDetails = async (songId: any) => {
-    try {
-      const response = await fetch(`/api/v1/songs/${songId}`);
-      const songData = await response.json();
-      return { ...songData, url: songData.song };
-    } catch (error) {
-      console.error(`Failed to fetch details for song ${songId}:`, error);
-      return null;
-    }
-  };
+  const [currentSongDetails, setCurrentSongDetails] = useState<Song | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(50);
+  const [speed, setSpeed] = useState(1);
+  const [isShuffle, setIsShuffle] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const initializePlayer = async () => {
+    const fetchPlaylist = async () => {
       try {
         const response = await fetch('/api/v1/playlist');
-        const playlistData = await response.json();
-        setPlaylist(playlistData);
-        if (playlistData.length > 0) {
-          const firstSongDetails = await fetchSongDetails(playlistData[0].id);
-          setCurrentSong(firstSongDetails);
+        const data = await response.json();
+        setPlaylist(data);
+        if (data.length > 0) {
+          setCurrentSong(data[0]);
         }
       } catch (error) {
-        console.error("Failed to fetch playlist:", error);
+        console.error("Failed to fetch playlist", error);
       } finally {
         setIsLoading(false);
       }
     };
-    initializePlayer();
+    fetchPlaylist();
   }, []);
 
-  const handleSongSelect = async (song: Song) => {
-    const fullSong = await fetchSongDetails(song.id);
-    if (fullSong) {
-      setCurrentSong(fullSong);
-      setIsPlaying(true);
+  useEffect(() => {
+    if (currentSong) {
+      fetch(`/api/v1/songs/${currentSong.id}`)
+        .then((res) => res.json())
+        .then((data: Song) => {
+          setCurrentSongDetails(data); // song details uploaded
+        })
+        .catch((err) => console.error("Failed to fetch song details", err));
     }
-  };
-  
-  const handleVolumeChange = (newVolume: number) => {
-      setVolume(newVolume);
-  };
+  }, [currentSong]);
 
-  const playPreviousSong = async () => {
-    if (!playlist || playlist.length === 0 || !currentSong) return;
-    const currentIndex = playlist.findIndex(song => song.id === currentSong.id);
-    if (currentIndex > 0) {
-        const prevSongDetails = await fetchSongDetails(playlist[currentIndex - 1].id);
-        setCurrentSong(prevSongDetails);
-        setIsPlaying(true);
-    }
-  };
-
-  const playNextSong = async () => {
-    if (!playlist || playlist.length === 0 || !currentSong) return;
-    const currentIndex = playlist.findIndex(song => song.id === currentSong.id);
-    let nextIndex;
-
-    if (isShuffling) {
-      nextIndex = Math.floor(Math.random() * playlist.length);
+  const handleNext = () => {
+    if (!currentSong) return;
+    
+    if (isShuffle) {
+      const randomIndex = Math.floor(Math.random() * playlist.length);
+      setCurrentSong(playlist[randomIndex]);
     } else {
-      nextIndex = currentIndex < playlist.length - 1 ? currentIndex + 1 : -1;
-    }
-
-    if (nextIndex !== -1) {
-      const nextSongDetails = await fetchSongDetails(playlist[nextIndex].id);
-      setCurrentSong(nextSongDetails);
-      setIsPlaying(true);
+      const currentIndex = playlist.findIndex(s => s.id === currentSong.id);
+      if (currentIndex < playlist.length - 1) {
+        setCurrentSong(playlist[currentIndex + 1]);
+      }
     }
   };
 
-  if (isLoading) {
-    return <LoadingSkeleton />;
-  }
+  const handlePrev = () => {
+    if (!currentSong) return;
+    const currentIndex = playlist.findIndex(s => s.id === currentSong.id);
+    if (currentIndex > 0) {
+      setCurrentSong(playlist[currentIndex - 1]);
+    }
+  };
+
+  const handleSongSelect = (song: Song) => {
+    setCurrentSong(song);
+    setIsPlaying(true);
+  };
+
+  const handleSpeedChange = () => {
+    const speeds = [0.5, 1, 2];
+    const nextIndex = (speeds.indexOf(speed) + 1) % speeds.length;
+    setSpeed(speeds[nextIndex]);
+  };
+
+  if (isLoading) return <LoadingSkeleton />;
 
   return (
-    <div className="flex flex-col md:flex-row p-6 md:p-8 space-y-8 md:space-y-0 md:space-x-8">
+    <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto p-4 gap-6">
       <div className="flex-1">
-        <CurrentlyPlaying 
-          song={currentSong}
-          playlist={playlist}
-          isPlaying={isPlaying} 
-          setIsPlaying={setIsPlaying}
-          playbackSpeed={playbackSpeed}
-          setPlaybackSpeed={setPlaybackSpeed}
-          isShuffling={isShuffling}
-          setIsShuffling={setIsShuffling}
-          volume={volume}
-          onVolumeChange={handleVolumeChange}
-          playPreviousSong={playPreviousSong}
-          playNextSong={playNextSong}
-        />
-        <AudioPlayer 
-          currentSong={currentSong}
-          isPlaying={isPlaying}
-          volume={volume / 100}
-          playbackSpeed={playbackSpeed}
-        />
+        {(currentSongDetails || currentSong) && (
+          <CurrentlyPlaying
+            song={currentSongDetails || currentSong} 
+            isPlaying={isPlaying}
+            volume={volume}
+            speed={speed}
+            isShuffle={isShuffle}
+            onTogglePlay={() => setIsPlaying(!isPlaying)}
+            onToggleShuffle={() => setIsShuffle(!isShuffle)}
+            onChangeSpeed={handleSpeedChange}
+            onNext={handleNext}
+            onPrev={handlePrev}
+            onVolumeChange={setVolume}
+            hasPrevious={playlist.findIndex(s => s.id === currentSong?.id) > 0}
+            hasNext={playlist.findIndex(s => s.id === currentSong?.id) < playlist.length - 1 || isShuffle}
+          />
+        )}
       </div>
-      <div className="flex-1">
+      
+      <div className="w-full md:w-96">
         <Playlist 
-          playlist={playlist} 
-          currentSong={currentSong} 
+          songs={playlist} 
+          currentSongId={currentSong?.id || null} 
           onSongSelect={handleSongSelect} 
         />
       </div>
+
+      {}
+      {currentSongDetails?.song && (
+        <AudioPlayer
+          key={currentSongDetails.id}
+          url={currentSongDetails.song}
+          isPlaying={isPlaying}
+          volume={volume}
+          speed={speed}
+          onEnded={handleNext}
+        />
+      )}
     </div>
   );
-};
-
-export default MusicPlayer;
+}

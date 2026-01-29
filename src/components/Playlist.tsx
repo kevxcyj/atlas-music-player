@@ -1,30 +1,26 @@
-import PlaylistItem from './PlayListItem';
+import PlayListItem from './PlayListItem';
+import { Song } from '../types';
 
-import { Song } from './MusicPlayer';
-
-// Define the types for the props this component expects
 interface PlaylistProps {
-  playlist: Song[];
-  currentSong: Song | null;
+  songs: Song[];
+  currentSongId: string | null;
   onSongSelect: (song: Song) => void;
 }
 
-const Playlist: React.FC<PlaylistProps> = ({ playlist, currentSong, onSongSelect }) => {
+export default function Playlist({ songs, currentSongId, onSongSelect }: PlaylistProps) {
   return (
-    <div className="flex flex-col p-6 space-y-2">
-      <h2 className="text-xl font-bold mb-4 dark:text-bg-light">Playlist</h2>
-      <div className="space-y-2">
-        {playlist.map((song) => (
-          <PlaylistItem
+    <div className="flex flex-col h-full bg-atlas-card-light dark:bg-atlas-card-dark rounded-xl shadow-xl overflow-hidden transition-colors duration-300">
+      <h3 className="p-4 text-lg font-bold border-b border-gray-200 dark:border-gray-700">Queue</h3>
+      <div className="overflow-y-auto flex-1 p-2 space-y-2">
+        {songs.map((song) => (
+          <PlayListItem
             key={song.id}
             song={song}
-            isSelected={currentSong?.id === song.id}
+            isSelected={song.id === currentSongId}
             onSelect={onSongSelect}
           />
         ))}
       </div>
     </div>
   );
-};
-
-export default Playlist;
+}

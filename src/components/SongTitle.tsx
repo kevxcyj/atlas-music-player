@@ -1,25 +1,17 @@
-import { Song } from './MusicPlayer';
-
 interface SongTitleProps {
-  song: Song | null;
+  title: string;
+  artist: string;
 }
 
-const SongTitle: React.FC<SongTitleProps> = ({ song }) => {
-  if (!song) {
-    return (
-      <div className="flex flex-col items-center text-center">
-        <h3 className="text-xl font-bold dark:text-bg-light">Loading...</h3>
-        <p className="text-gray-500 dark:text-gray-400">...</p>
-      </div>
-    );
-  }
-
+export default function SongTitle({ title, artist }: SongTitleProps) {
   return (
-    <div className="flex flex-col items-center text-center">
-      <h3 className="text-xl font-bold dark:text-bg-light">{song.title}</h3>
-      <p className="text-gray-500 dark:text-gray-400">{song.artist}</p>
+    <div className="text-center">
+      <h2 className="text-2xl font-bold text-atlas-text-light dark:text-atlas-text-dark truncate max-w-md">
+        {title}
+      </h2>
+      <p className="text-atlas-secondary mt-1 text-lg">
+        {artist}
+      </p>
     </div>
   );
-};
-
-export default SongTitle;
+}

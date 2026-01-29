@@ -2,61 +2,22 @@ import CoverArt from './CoverArt';
 import SongTitle from './SongTitle';
 import PlayControls from './PlayControls';
 import VolumeControls from './VolumeControls';
-import { Song } from './MusicPlayer';
+import { Song, PlayControlsProps, VolumeControlsProps } from '../types';
 
-interface CurrentlyPlayingProps {
-  song: Song | null;
-  playlist: Song[];
-  isPlaying: boolean;
-  setIsPlaying: (isPlaying: boolean) => void;
-  playbackSpeed: number;
-  setPlaybackSpeed: (speed: number) => void;
-  isShuffling: boolean;
-  setIsShuffling: (isShuffling: boolean) => void;
-  volume: number;
-  onVolumeChange: (newVolume: number) => void;
-  playNextSong: () => void;
-  playPreviousSong: () => void;
+interface CurrentlyPlayingProps extends PlayControlsProps, VolumeControlsProps {
+  song: Song;
 }
 
-const CurrentlyPlaying: React.FC<CurrentlyPlayingProps> = ({ 
-  song, 
-  playlist,
-  isPlaying, 
-  setIsPlaying, 
-  playbackSpeed, 
-  setPlaybackSpeed, 
-  isShuffling, 
-  setIsShuffling, 
-  volume, 
-  onVolumeChange, 
-  playNextSong, 
-  playPreviousSong 
-}) => {
+export default function CurrentlyPlaying({ song, ...props }: CurrentlyPlayingProps) {
   return (
-    <div className="flex flex-col items-center justify-center p-6 space-y-6">
-      <div className="w-full max-w-sm mx-auto">
-        <CoverArt song={song} />
+    <div className="flex flex-col items-center justify-center h-full p-6 bg-atlas-card-light dark:bg-atlas-card-dark rounded-xl shadow-xl transition-colors duration-300">
+      <CoverArt coverUrl={song.cover} songId={song.id} />
+      <SongTitle title={song.title} artist={song.artist} />
+      
+      <div className="w-full mt-6 space-y-4">
+        <PlayControls {...props} />
+        <VolumeControls volume={props.volume} onVolumeChange={props.onVolumeChange} />
       </div>
-      <SongTitle song={song} />
-      <PlayControls 
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
-        playbackSpeed={playbackSpeed}
-        setPlaybackSpeed={setPlaybackSpeed}
-        isShuffling={isShuffling}
-        setIsShuffling={setIsShuffling}
-        playNextSong={playNextSong}
-        playPreviousSong={playPreviousSong}
-        song={song}
-        playlist={playlist}
-      />
-      <VolumeControls 
-        volume={volume}
-        onVolumeChange={onVolumeChange}
-      />
     </div>
   );
-};
-
-export default CurrentlyPlaying;
+}
